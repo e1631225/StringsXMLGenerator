@@ -1,45 +1,89 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
+import com.google.gson.Gson;
 
-public class HTTPGetPost {
+public class HTTPRequestHandler {
 	
 	private final String USER_AGENT = "Mozilla/5.0";
 	// HTTP GET request
-    private void sendGet() throws Exception {
+    void getLanguageList() throws Exception {
 
-        String url = "https://translate.google.com/#en/tr/mouse";
+//        String url = "https://dev.microsofttranslator.com/languages?api-version=1.0&scope=text";
+//
+//        URL obj = new URL(url);
+//        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//        con.
+//        // optional default is GET
+//        con.setRequestMethod("GET");
+//        
+//
+//        // add request header
+//        con.setRequestProperty("User-Agent", USER_AGENT);
+//
+//        int responseCode = con.getResponseCode();
+//        System.out.println("\nSending 'GET' request to URL : " + url);
+//        System.out.println("Response Code : " + responseCode);
+//
+//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//        String inputLine;
+//        StringBuffer response = new StringBuffer();
+//
+//        while ((inputLine = in.readLine()) != null) {
+//            response.append(inputLine);
+//        }
+//        in.close();
+//
+//        // print result
+//        System.out.println(response.toString());
+    	
+    	String url = "https://dev.microsofttranslator.com/languages?api-version=1.0&scope=text";
 
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet(url);
 
-        // optional default is GET
-        con.setRequestMethod("GET");
+		// add request header
+		request.addHeader("User-Agent", USER_AGENT);
+		request.addHeader("Accept-Language", "en");
+		request.addHeader("content-type", "application/xml");
+	
 
-        // add request header
-        con.setRequestProperty("User-Agent", USER_AGENT);
+		HttpResponse response = client.execute(request);
 
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " +
+                       response.getStatusLine().getStatusCode());
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
+		BufferedReader rd = new BufferedReader(
+                       new InputStreamReader(response.getEntity().getContent()));
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
 
-        // print result
-        System.out.println(response.toString());
+		System.out.println(result.toString());
+		
+		Gson gson = new Gson();
+		GsonResponse response1 = gson.fromJson(result.toString(), GsonResponse.class);
+		System.out.println(response1.toString());
+		
+		
+		
 
     }
     

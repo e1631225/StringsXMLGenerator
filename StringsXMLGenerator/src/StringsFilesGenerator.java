@@ -16,6 +16,19 @@ public class StringsFilesGenerator {
 
 	public void execute() {
 		readStringsFile();
+		getLanguageList();
+	}
+
+	private void getLanguageList() {
+		// TODO Auto-generated method stub
+		HTTPRequestHandler handler = new HTTPRequestHandler();
+		try {
+			handler.getLanguageList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void readStringsFile() {
