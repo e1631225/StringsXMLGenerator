@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 import com.google.gson.Gson;
 
@@ -27,8 +30,6 @@ public class HTTPRequestHandler {
 
 	private final String USER_AGENT = "Mozilla/5.0";
 	private String accessToken;
-	
-	
 
 	public HTTPRequestHandler() {
 		super();
@@ -147,12 +148,44 @@ public class HTTPRequestHandler {
 			System.out.println(result);
 			accessToken = result.toString();
 		} catch (IllegalStateException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void getTranslation(String fromLang, String toLang) {
+
+	public String getTranslation(String fromLang, String toLang, String word) {
+		try {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(Const.TRANSLATE_URL + "text=" + URLEncoder.encode(word) + "&from=" + fromLang + "&to=" + toLang);
+//			toLang = "tr";
+			// add request header
+			request.addHeader("User-Agent", USER_AGENT);
+			request.addHeader("Authorization", "Bearer " + accessToken);
+//			HttpParams params = new BasicHttpParams();
+//			params.setParameter("from", fromLang);
+//			params.setParameter("to", toLang);
+//			params.setParameter("text", word);
+//			request.setParams(params);
+
+			HttpResponse response = client.execute(request);
+
+			System.out.println("\nSending 'GET' request to URL : "
+					+ Const.TRANSLATE_URL);
+
+			BufferedReader rd;
+			rd = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+			System.out.println(result);
+			return result.toString();
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String getAccessToken() {
@@ -162,7 +195,5 @@ public class HTTPRequestHandler {
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
-
 
 }

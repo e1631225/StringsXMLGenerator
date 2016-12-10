@@ -29,7 +29,16 @@ public class StringsFilesGenerator {
 
 	private void getTranslations() {
 		try {
-			handler.getTranslation(null, null);
+			List<String> wordList = new ArrayList<String>();
+			wordList.addAll(this.wordList);
+			wordList.addAll(abbNamePair.values());
+			for(String language : abbNamePair.keySet()) {
+				System.out.println("------------------------------------");
+				for(String word : wordList) {
+					String result = handler.getTranslation("en", language, word);
+					System.out.println(result);
+				}				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,18 +83,7 @@ public class StringsFilesGenerator {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-
 					System.out.println(eElement.getTextContent());
-					// System.out.println("Staff id : " +
-					// eElement.getAttribute("id"));
-					// System.out.println("First Name : " +
-					// eElement.getElementsByTagName("name").item(0).getTextContent());
-					// System.out.println("Last Name : " +
-					// eElement.getElementsByTagName("lastname").item(0).getTextContent());
-					// System.out.println("Nick Name : " +
-					// eElement.getElementsByTagName("nickname").item(0).getTextContent());
-					// System.out.println("Salary : " +
-					// eElement.getElementsByTagName("salary").item(0).getTextContent());
 					wordList.add(eElement.getTextContent());
 
 				}

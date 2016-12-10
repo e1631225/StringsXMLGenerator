@@ -10,4 +10,6 @@ public class Const {
 	public static final String BING_TOKEN_ADRESS = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 	
 	public static final String API_KEY = "";
+	
+	public static final String TRANSLATE_URL = "https://api.microsofttranslator.com/v2/http.svc/Translate?";
 }
