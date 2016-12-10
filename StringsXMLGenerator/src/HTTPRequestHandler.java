@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 public class HTTPRequestHandler {
 	
 	private final String USER_AGENT = "Mozilla/5.0";
+	private LinkedHashMap<String, String> abbNamePair = new LinkedHashMap<String, String>();
 	// HTTP GET request
     void getLanguageList() throws Exception {
 
@@ -60,7 +61,6 @@ public class HTTPRequestHandler {
 		// add request header
 		request.addHeader("User-Agent", USER_AGENT);
 		request.addHeader("Accept-Language", "en");
-		request.addHeader("content-type", "application/xml");
 	
 
 		HttpResponse response = client.execute(request);
@@ -78,13 +78,18 @@ public class HTTPRequestHandler {
 			result.append(line);
 		}
 
-		System.out.println(result.toString());
+//		System.out.println(result.toString());
 		
 		Gson gson = new Gson();
 		GsonResponse gsonResult = gson.fromJson(result.toString(), GsonResponse.class);
 		Map<String, GsonResponse.Language> map = (Map<String, GsonResponse.Language>) gsonResult.getText();
 		for (String key : map.keySet()) {
-			System.out.println(key);
+//			System.out.println(key);
+			abbNamePair.put(key, map.get(key).name);
+		}
+		
+		for (String key : abbNamePair.keySet()) {
+			System.out.println(key + " : " + abbNamePair.get(key));
 		}
 		
 		
@@ -132,4 +137,14 @@ public class HTTPRequestHandler {
         System.out.println(response.toString());
 
     }
+
+	public LinkedHashMap<String, String> getAbbNamePair() {
+		return abbNamePair;
+	}
+
+	public void setAbbNamePair(LinkedHashMap<String, String> abbNamePair) {
+		this.abbNamePair = abbNamePair;
+	}
+    
+    
 }
