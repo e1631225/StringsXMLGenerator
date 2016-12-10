@@ -1,3 +1,4 @@
+package main;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -19,10 +20,8 @@ import javax.naming.InitialContext;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Main {
-	// Enter your strings.xml file path here
-	// ex: "C:/dev/AndroidStudioProjects/Catalog/app/src/main/res/values/strings.xml"	
-	public static final String STRINGS_XML_FILE_PATH = "C:/dev/AndroidStudioProjects/Catalog/app/src/main/res/values/strings.xml";
-
+	// Please fill all Constants in Const.java
+	
 	public static void main(String[] args) throws Exception {
 		StringsFilesGenerator generator = new StringsFilesGenerator();
 		generator.execute();

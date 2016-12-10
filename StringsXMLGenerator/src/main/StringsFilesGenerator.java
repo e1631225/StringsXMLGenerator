@@ -1,6 +1,10 @@
+package main;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,29 +17,38 @@ import org.w3c.dom.NodeList;
 public class StringsFilesGenerator {
 
 	List<String> wordList = new ArrayList<String>();
+	private Map<String, String> abbNamePair = new LinkedHashMap<String, String>();
+	HTTPRequestHandler handler;
 
 	public void execute() {
+		handler = new HTTPRequestHandler();
 		readStringsFile();
 		getLanguageList();
+		getTranslations();
+	}
+
+	private void getTranslations() {
+		try {
+			handler.getTranslation(null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void getLanguageList() {
-		// TODO Auto-generated method stub
-		HTTPRequestHandler handler = new HTTPRequestHandler();
 		try {
-			handler.getLanguageList();
+			abbNamePair = handler.getLanguageList();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void readStringsFile() {
 		// Parse strings.xml file and system.out all words;
 		try {
 
-			File fXmlFile = new File(Main.STRINGS_XML_FILE_PATH);
+			File fXmlFile = new File(Const.STRINGS_XML_FILE_PATH);
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 					.newInstance();
