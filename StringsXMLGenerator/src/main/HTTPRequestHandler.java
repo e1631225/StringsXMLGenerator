@@ -165,7 +165,8 @@ public class HTTPRequestHandler {
 //			params.setParameter("to", toLang);
 //			params.setParameter("text", word);
 //			request.setParams(params);
-
+			HttpPost post = new HttpPost();
+			
 			HttpResponse response = client.execute(request);
 
 			System.out.println("\nSending 'GET' request to URL : "
@@ -180,8 +181,9 @@ public class HTTPRequestHandler {
 			while ((line = rd.readLine()) != null) {
 				result.append(line);
 			}
-			System.out.println(result);
-			return result.toString();
+			String resultString = Util.splitXmlResult(result.toString());
+			System.out.println(resultString);
+			return resultString;
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}

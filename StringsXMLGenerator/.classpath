@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="C:/dev/eclipseGitRepo/StringsXMLGenerator/lib/http-core-4.1.jar"/>
 	<classpathentry kind="lib" path="C:/dev/eclipseGitRepo/StringsXMLGenerator/lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/dev/eclipseGitRepo/StringsXMLGenerator/lib/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/dev/eclipseGitRepo/StringsXMLGenerator/lib/commons-lang3-3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -33,7 +33,7 @@ public class StringsFilesGenerator {
 			wordList.addAll(this.wordList);
 			wordList.addAll(abbNamePair.values());
 			for(String language : abbNamePair.keySet()) {
-				System.out.println("------------------------------------");
+				System.out.println("-----------------" + abbNamePair.get(language) + "-------------------");
 				for(String word : wordList) {
 					String result = handler.getTranslation("en", language, word);
 					System.out.println(result);
