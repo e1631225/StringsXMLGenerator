@@ -70,7 +70,7 @@ public class HTTPRequestHandler {
 		LinkedHashMap<String, String> abbNamePair = new LinkedHashMap<String, String>();
 		for (String key : map.keySet()) {
 			// System.out.println(key);
-			abbNamePair.put(key, map.get(key).getName());
+			abbNamePair.put(Util.exchangeProblematicCountryCode(key), map.get(key).getName());
 		}
 
 		for (String key : abbNamePair.keySet()) {
@@ -169,8 +169,8 @@ public class HTTPRequestHandler {
 			
 			HttpResponse response = client.execute(request);
 
-			System.out.println("\nSending 'GET' request to URL : "
-					+ Const.TRANSLATE_URL);
+//			System.out.println("\nSending 'GET' request to URL : "
+//					+ Const.TRANSLATE_URL);
 
 			BufferedReader rd;
 			rd = new BufferedReader(new InputStreamReader(response.getEntity()
@@ -182,7 +182,7 @@ public class HTTPRequestHandler {
 				result.append(line);
 			}
 			String resultString = Util.splitXmlResult(result.toString());
-			System.out.println(resultString);
+//			System.out.println(resultString);
 			return resultString;
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();

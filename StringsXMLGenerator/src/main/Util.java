@@ -16,5 +16,26 @@ public class Util {
 		}
 		return null;
 	}
+	
+	public static String exchangeProblematicCountryCode(String code) {
+		// there are some country codes that are not same with google.
+		// we exchange these country codes with google equivalents
+		String result = code;
+		
+		if (code.equals("he")) {
+			result = "iw";
+		} else if (code.equals("id")) {
+			result = "in";
+		} else if (code.equals("mww")) {
+			result = "hmn";
+		} else if (code.equals("sr-Cyrl")) {
+			result = "sr";
+		} else if (code.equals("yua")) {
+			result = "myn";
+		} else if (code.equals("zh-Hans")) {
+			result = "zh";
+		}
+		return result;
+	}
 
 }
