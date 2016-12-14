@@ -37,5 +37,16 @@ public class Util {
 		}
 		return result;
 	}
+	
+	public static String getXmlFormattedLine(String word, String tag) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t");
+		buffer.append("<string name=\"");
+		buffer.append(tag);
+		buffer.append("\">");
+		buffer.append(word);
+		buffer.append("</string>");
+		return buffer.toString();
+	}
 
 }

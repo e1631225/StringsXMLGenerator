@@ -19,7 +19,8 @@ import object.ThreadPool;
 
 public class StringsFilesGenerator {
 
-	List<String> wordList = new ArrayList<String>();
+//	List<String> wordList = new ArrayList<String>();
+	Map<String, String> tagValueMap = new LinkedHashMap<String, String>(); // tag == attribute name, value = word to be translated
 	private Map<String, String> abbNamePair = new LinkedHashMap<String, String>();
 	HTTPRequestHandler handler;
 
@@ -32,23 +33,27 @@ public class StringsFilesGenerator {
 
 	private void getTranslations() {
 		try {
-			List<String> wordList = new ArrayList<String>();
-			wordList.addAll(this.wordList);
-			wordList.addAll(abbNamePair.values());
-//			abbNamePair.clear();
-			abbNamePair.put("tr", "Turkish");
-//			File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
-//			file.mkdir();
+			Map<String, String> wordList = new LinkedHashMap<String, String>(); // tag == attribute name, value = word to be translated
+			wordList.putAll(this.tagValueMap);
+			for(String lang : abbNamePair.values()) {
+				wordList.put(lang, lang);
+			}
+			// abbNamePair.clear();
+//			abbNamePair.put("tr", "Turkish");
+			// File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
+			// file.mkdir();
 			for (String language : abbNamePair.keySet()) {
-				File file2 = new File(Const.DESTINATION_PATH + "test\\values-" + language + "\\strings.xml");
+				File file2 = new File(Const.DESTINATION_PATH + "test\\values-"
+						+ language + "\\strings.xml");
 				file2.getParentFile().mkdirs();
 				file2.createNewFile();
 				List<ThreadPool> threads = new ArrayList<>();
-				System.out.println("-----------------" + abbNamePair.get(language) + "-------------------");
-				for (String word : wordList) {
-					threads.add(new ThreadPool(handler, "en", language, word));
+				System.out.println("-----------------"
+						+ abbNamePair.get(language) + "-------------------");
+				for (String attr : wordList.keySet()) {
+					threads.add(new ThreadPool(handler, "en", language, wordList.get(attr), attr)) ;
 				}
-				for(ThreadPool threadPool : threads) {
+				for (ThreadPool threadPool : threads) {
 					threadPool.run();
 				}
 				boolean isAllDead = false;
@@ -64,17 +69,19 @@ public class StringsFilesGenerator {
 					if (!isAllDead)
 						Thread.sleep(200L);
 				}
-				 PrintWriter writer = new PrintWriter(file2.getAbsolutePath(), "UTF-8");
-				    
-				for(ThreadPool pool : threads) {
+				PrintWriter writer = new PrintWriter(file2.getAbsolutePath(),
+						"UTF-8");
+				writer.println("<resources>");
+				for (ThreadPool pool : threads) {
 					System.out.println(pool.getResultWord());
-					writer.println(pool.getResultWord());
+					writer.println(Util.getXmlFormattedLine(pool.getResultWord(), pool.getAttr()));
 				}
+				writer.print("</resources>");
 				writer.close();
 				threads.clear();
 
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,12 +102,14 @@ public class StringsFilesGenerator {
 
 			File fXmlFile = new File(Const.STRINGS_XML_FILE_PATH);
 
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
+					.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
 
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+			System.out.println("Root element :"
+					+ doc.getDocumentElement().getNodeName());
 
 			NodeList nList = doc.getElementsByTagName("string");
 
@@ -117,8 +126,10 @@ public class StringsFilesGenerator {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-					System.out.println(eElement.getTextContent());
-					wordList.add(eElement.getTextContent());
+					String tag = eElement.getAttribute("name").toString();
+					String value = eElement.getTextContent();
+					System.out.println(tag + ", " + value);
+					tagValueMap.put(tag, value);
 
 				}
 			}
