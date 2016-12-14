@@ -26,7 +26,7 @@ public class Util {
 			result = "iw";
 		} else if (code.equals("id")) {
 			result = "in";
-		} else if (code.equals("mww")) { 
+		} else if (code.equals("mww")) {   
 			result = "hmn";
 		} else if (code.equals("sr-Cyrl")) {
 			result = "sr";

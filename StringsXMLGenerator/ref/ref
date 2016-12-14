@@ -1,0 +1,3 @@
+[remote "origin"]
+	url = ssh://git@github.com/e1631225/StringsXMLGenerator.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
