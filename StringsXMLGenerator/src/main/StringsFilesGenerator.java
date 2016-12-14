@@ -19,8 +19,8 @@ import object.ThreadPool;
 
 public class StringsFilesGenerator {
 
-//	List<String> wordList = new ArrayList<String>();
-	Map<String, String> tagValueMap = new LinkedHashMap<String, String>(); // tag == attribute name, value = word to be translated
+	// List<String> wordList = new ArrayList<String>();
+	Map<String, String> tagValueMap = new LinkedHashMap<String, String>(); /* tag == attribute name, value = word to be translated */
 	private Map<String, String> abbNamePair = new LinkedHashMap<String, String>();
 	HTTPRequestHandler handler;
 
@@ -33,30 +33,34 @@ public class StringsFilesGenerator {
 
 	private void getTranslations() {
 		try {
-			Map<String, String> wordList = new LinkedHashMap<String, String>(); // tag == attribute name, value = word to be translated
+			Map<String, String> wordList = new LinkedHashMap<String, String>(); /* tag == attribute name, value = word to be translated */
 			wordList.putAll(this.tagValueMap);
-			for(String lang : abbNamePair.values()) {
+			for (String lang : abbNamePair.values()) {
 				wordList.put(lang, lang);
 			}
-			// abbNamePair.clear();
+//			abbNamePair.clear();
 			abbNamePair.put("default", "English");
+//			abbNamePair.put("ar", "Arabic");
 			// File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
 			// file.mkdir();
 			for (String language : abbNamePair.keySet()) {
 				File file2;
 				if (language.equals("default")) {
-					file2 = new File(Const.DESTINATION_PATH + "values\\values\\strings.xml");
+					file2 = new File(Const.DESTINATION_PATH
+							+ "values\\values\\strings.xml");
 				} else {
-					file2 = new File(Const.DESTINATION_PATH + "values\\values-" + language + "\\strings.xml");
+					file2 = new File(Const.DESTINATION_PATH + "values\\values-"
+							+ language + "\\strings.xml");
 				}
-						
+
 				file2.getParentFile().mkdirs();
 				file2.createNewFile();
 				List<ThreadPool> threads = new ArrayList<>();
 				System.out.println("-----------------"
 						+ abbNamePair.get(language) + "-------------------");
 				for (String attr : wordList.keySet()) {
-					threads.add(new ThreadPool(handler, "en", language, wordList.get(attr), attr)) ;
+					threads.add(new ThreadPool(handler, "en", language,
+							wordList.get(attr), attr));
 				}
 				for (ThreadPool threadPool : threads) {
 					threadPool.run();
@@ -79,7 +83,8 @@ public class StringsFilesGenerator {
 				writer.println("<resources>");
 				for (ThreadPool pool : threads) {
 					System.out.println(pool.getResultWord());
-					writer.println(Util.getXmlFormattedLine(pool.getResultWord(), pool.getAttr()));
+					writer.println(Util.getXmlFormattedLine(
+							pool.getResultWord(), pool.getAttr()));
 				}
 				writer.print("</resources>");
 				writer.close();
