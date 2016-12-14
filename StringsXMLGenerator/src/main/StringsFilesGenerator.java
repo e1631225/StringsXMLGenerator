@@ -39,12 +39,17 @@ public class StringsFilesGenerator {
 				wordList.put(lang, lang);
 			}
 			// abbNamePair.clear();
-//			abbNamePair.put("tr", "Turkish");
+			abbNamePair.put("default", "English");
 			// File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
 			// file.mkdir();
 			for (String language : abbNamePair.keySet()) {
-				File file2 = new File(Const.DESTINATION_PATH + "test\\values-"
-						+ language + "\\strings.xml");
+				File file2;
+				if (language.equals("default")) {
+					file2 = new File(Const.DESTINATION_PATH + "values\\values\\strings.xml");
+				} else {
+					file2 = new File(Const.DESTINATION_PATH + "values\\values-" + language + "\\strings.xml");
+				}
+						
 				file2.getParentFile().mkdirs();
 				file2.createNewFile();
 				List<ThreadPool> threads = new ArrayList<>();
