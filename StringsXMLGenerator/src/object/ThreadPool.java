@@ -17,7 +17,7 @@ public class ThreadPool {
 		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (fromLang.equalsIgnoreCase(toLang)) {
+				if (toLang.equalsIgnoreCase("default")) {
 					resultWord = fromWord;
 				} else {
 					resultWord = handler.getTranslation(fromLang, toLang,
